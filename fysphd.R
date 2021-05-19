@@ -82,6 +82,10 @@ animate(anim, width = 1000, height = 750, res = 150, fps = 15, end_pause = 15)
 anim_save("fysphd_anim.gif")
 
 
+# Gemmer data som csv og går videre til dst-data
+write.csv(fysphd,"~/R/Snacks/data/fysphd.csv")
+
+
 # ALLE PHD EFTER HOVEDOMRÅDE 1996-2019 ----
 dst <- read.csv("~/R/Snacks/data/dst.csv", sep=";", header = FALSE)
 names(dst) <- c("Hovedområde", "year", "Count")
