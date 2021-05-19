@@ -110,19 +110,82 @@ anim2 <- r + transition_reveal(year)
 
 animate(anim2, width = 1000, height = 1000, res = 150, fps = 15, end_pause = 20)
 
-anim_save("dst_anim.gif")
+anim_save("dst_cum_anim.gif")
 
-# KOMBINERE DE TO MED MAGICK(fik ikke til at fungere) ---- 
-# a_gif <- animate(anim, width = 1200, height = 900, res = 150, end_pause = 10)
-# b_gif <- animate(anim2, width = 1200, height = 900, res = 150, end_pause = 10)
-# 
-# a_mgif <- image_read(a_gif)
-# b_mgif <- image_read(b_gif)
-# 
-# new_gif <- image_append(c(a_mgif[1], b_mgif[1]))
-# for(i in 2:100){
-#   combined <- image_append(c(a_mgif[i], b_mgif[i]))
-#   new_gif <- c(new_gif, combined)
-# }
-# 
-# new_gif
+
+# PLOT
+q <- ggplot(dst, aes(year, Cum, group = Hovedområde, colour = stringr::str_wrap(Hovedområde,14))) +
+  geom_line(size = 0.8) +
+  geom_point(size = 2) +
+  labs(x = "År",
+       y = "Kumuleret antal nye ph.d.'er",
+       title = "Tildelte ph.d.-grader i Danmark 1996-2019",
+       subtitle ="Kilde: https://www.statistikbanken.dk/10137") +
+  theme_bw() +
+  theme(legend.position="bottom") +
+  scale_x_continuous(limits=c(1995,2020)) +
+  # scale_color_viridis(discrete = TRUE, option = "A") # ALTERNATIV: 
+  scale_color_brewer(palette = "Dark2", name = "Hovedområde")
+
+q
+
+ggsave('dst_plot_cum.png', 
+       width = 16,
+       height = 12,
+       units = "cm",
+       dpi=1200)
+
+
+
+#COUNT GIF OG PLOT 
+s <- ggplot(dst, aes(year, Count, group = Hovedområde, colour = stringr::str_wrap(Hovedområde,14))) +
+  geom_line(size = 0.8) +
+  geom_point(size = 2, show.legend = FALSE) +
+  labs(x = "År",
+       y = "Årligt antal nye ph.d.'er",
+       title = "Tildelte ph.d.-grader i Danmark 1996-2019",
+       subtitle ="Kilde: https://www.statistikbanken.dk/10137") +
+  theme_bw() +
+  theme(legend.position="bottom") +
+  scale_x_continuous(limits=c(1995,2026)) +
+  scale_y_continuous(breaks=0:7*100) +
+  expand_limits(y=0) +
+  # scale_color_viridis(discrete = TRUE, option = "A") # ALTERNATIV: 
+  scale_color_brewer(palette = "Dark2", name = "Hovedområde") +
+  geom_label(aes(label = Hovedområde), hjust = -0.05, size = 3.5, alpha = 0.6, show.legend = FALSE)
+
+s
+
+
+# Animate 
+anim3 <- s + transition_reveal(year)
+
+animate(anim3, width = 1000, height = 1000, res = 150, fps = 15, end_pause = 20)
+
+anim_save("dst_count_anim.gif")
+
+
+
+# PLOT COUNT
+t <- ggplot(dst, aes(year, Count, group = Hovedområde, colour = stringr::str_wrap(Hovedområde,14))) +
+  geom_line(size = 0.8) +
+  geom_point(size = 2) +
+  labs(x = "År",
+       y = "Årligt antal nye ph.d.'er",
+       title = "Tildelte ph.d.-grader i Danmark 1996-2019",
+       subtitle ="Kilde: https://www.statistikbanken.dk/10137") +
+  theme_bw() +
+  theme(legend.position="bottom") +
+  scale_x_continuous(limits=c(1995,2020)) +
+  scale_y_continuous(breaks=0:7*100) +
+  expand_limits(y=0) +
+  # scale_color_viridis(discrete = TRUE, option = "A") # ALTERNATIV: 
+  scale_color_brewer(palette = "Dark2", name = "Hovedområde")
+
+t
+
+ggsave('dst_plot_count.png', 
+       width = 16,
+       height = 12,
+       units = "cm",
+       dpi=1200)
