@@ -1,9 +1,4 @@
 # PACKAGES ----
-# Kun første gang: Installér Tidyverse-package
-install.packages("tidyverse")
-install.packages("readxl")
-install.packages("reshape2")
-
 # Indlæs Tidyverse-package
 library(tidyverse)
 library(readxl)
@@ -16,7 +11,7 @@ library(reshape2)
 fig2 <- data.frame(
   "level" = c("Inactive", "Insufficiently active", "Active", "Highly active"), 
   "n" = c(44, 234, 108, 185), 
-  "who" = c("Not meeting", "Not meeting", "Meeting", "Meeting"),
+  "who" = c("Not meeting", "Not meeting", "Meeting", "Meeting")
     )
 fig2$level <- factor(fig2$level, levels = c("Inactive", "Insufficiently active", "Active", "Highly active"))
 
