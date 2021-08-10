@@ -13,6 +13,7 @@ fig2 <- data.frame(
   "n" = c(44, 234, 108, 185), 
   "who" = c("Not meeting", "Not meeting", "Meeting", "Meeting")
     )
+
 fig2$level <- factor(fig2$level, levels = c("Inactive", "Insufficiently active", "Active", "Highly active"))
 
 # Danner plot SORT/HVID
@@ -56,7 +57,7 @@ ggsave("fig2_farver.jpg",
 # FIGUR 3----
    
 # Indlæser data til figur 3 fra fil med klippet tabel
-tabel <- read_excel("~/R/MK-studie/tabel.xlsx")
+tabel <- read_excel("~/R/Snacks/data/tabel.xlsx")
 
 # Laver data om til long-format
 fig3 <- melt(tabel, id.vars=c("vigorous"),
@@ -96,47 +97,7 @@ table(fig3uncount$level)    # Det gør de!
 
 # FIGUR 3----
 
-# Fig3-JITTER ----
-ggplot(fig3uncount, aes(moderate, vigorous, color = level)) +
-  geom_jitter(position = position_jitter(width = .25, height = .25), size = 3.5, alpha = 0.6) +
-  labs(x = "Moderate-intensity physical activity, minutes/week",
-       y = "Vigorous-intensity physical activity, minutes/week") +
-  theme_classic() +
-  theme(legend.position = "top") +
-  scale_color_manual(values=c("firebrick", "coral", "dodgerblue2", "navy"), name = "")
-
-
-# Gemmer figur
-ggsave("fig3.jpg", 
-       width = 14,
-       height = 14,
-       units = "cm",
-       dpi=600)
-
-
-# Figur 3 med SHAPES
-ggplot(fig3uncount, aes(moderate, vigorous, color = level, shape = level)) +
-  geom_jitter(position = position_jitter(width = .25, height = .25), size = 4, alpha = 0.6) +
-  labs(x = "Moderate-intensity physical activity, minutes/week",
-       y = "Vigorous-intensity physical activity, minutes/week") +
-  theme_classic() +
-  theme(legend.position = "top") +
-  scale_color_manual(values = c("grey59", "grey59", "grey19", "grey19"), name = "") +
-  scale_shape_manual(values = c(15, 19, 17, 18), name = "")
-
-
-# Gemmer figur
-ggsave("fig3_shapes.jpg", 
-       width = 14,
-       height = 14,
-       units = "cm",
-       dpi=600)
-
-
-
-
-
-# Figur 3 som kugler ----
+# Figur 3 som kugler
 ggplot(fig3, aes(moderate, vigorous, color = level, size = n)) +
   geom_count() +
   labs(x = "Moderate-intensity physical activity, minutes/week",
@@ -155,20 +116,58 @@ ggsave("fig3_balls_farver.jpg",
        units = "cm",
        dpi=600)
 
-# Som sort/hvid 4 kat
-ggplot(fig3, aes(moderate, vigorous, color = level, size = n)) +
-  geom_count() +
-  labs(x = "Moderate-intensity physical activity, minutes/week",
-       y = "Vigorous-intensity physical activity, minutes/week") +
-  theme_classic() +
-  theme(legend.position = "top") +
-  scale_color_manual(values = c("grey65", "grey45", "grey25", "grey5"), name = "") +
-  scale_size_continuous(breaks = NULL, name = "", range = c(6,24)) +
-  geom_text(aes(label = n), color = "#ffffff", size = 4, fontface = 2) +
-  guides(colour = guide_legend(override.aes = list(size = 6)))
+# Discarded figures ----
 
+# # Fig3-JITTER
+# ggplot(fig3uncount, aes(moderate, vigorous, color = level)) +
+#   geom_jitter(position = position_jitter(width = .25, height = .25), size = 3.5, alpha = 0.6) +
+#   labs(x = "Moderate-intensity physical activity, minutes/week",
+#        y = "Vigorous-intensity physical activity, minutes/week") +
+#   theme_classic() +
+#   theme(legend.position = "top") +
+#   scale_color_manual(values=c("firebrick", "coral", "dodgerblue2", "navy"), name = "")
+# 
+# 
+# # Gemmer figur
+# ggsave("fig3.jpg", 
+#        width = 14,
+#        height = 14,
+#        units = "cm",
+#        dpi=600)
+# 
+# 
+# # Figur 3 med SHAPES
+# ggplot(fig3uncount, aes(moderate, vigorous, color = level, shape = level)) +
+#   geom_jitter(position = position_jitter(width = .25, height = .25), size = 4, alpha = 0.6) +
+#   labs(x = "Moderate-intensity physical activity, minutes/week",
+#        y = "Vigorous-intensity physical activity, minutes/week") +
+#   theme_classic() +
+#   theme(legend.position = "top") +
+#   scale_color_manual(values = c("grey59", "grey59", "grey19", "grey19"), name = "") +
+#   scale_shape_manual(values = c(15, 19, 17, 18), name = "")
+# 
+# 
+# # Gemmer figur
+# ggsave("fig3_shapes.jpg", 
+#        width = 14,
+#        height = 14,
+#        units = "cm",
+#        dpi=600)
 
-# Som sort/hvid 4 kat SHAPES
+# # Som sort/hvid 4 kat
+# ggplot(fig3, aes(moderate, vigorous, color = level, size = n)) +
+#   geom_count() +
+#   labs(x = "Moderate-intensity physical activity, minutes/week",
+#        y = "Vigorous-intensity physical activity, minutes/week") +
+#   theme_classic() +
+#   theme(legend.position = "top") +
+#   scale_color_manual(values = c("grey65", "grey45", "grey25", "grey5"), name = "") +
+#   scale_size_continuous(breaks = NULL, name = "", range = c(6,24)) +
+#   geom_text(aes(label = n), color = "#ffffff", size = 4, fontface = 2) +
+#   guides(colour = guide_legend(override.aes = list(size = 6)))
+# 
+# 
+# # Som sort/hvid 4 kat SHAPES
 # ggplot(fig3, aes(moderate, vigorous, color = who, size = n, shape = level)) +
 #   geom_count() +
 #   labs(x = "Moderate-intensity physical activity, minutes/week",
@@ -180,30 +179,18 @@ ggplot(fig3, aes(moderate, vigorous, color = level, size = n)) +
 #   geom_text(aes(label = n), color = "#ffffff", size = 4, fontface = 2) +
 #   scale_shape_manual(values = c(15, 19, 17, 18), name = "") +
 #   guides(color = guide_legend(override.aes = list(size = 6)))
+# 
+# 
+#  
+# # Som sort/hvid, 2 kat
+# ggplot(fig3, aes(moderate, vigorous, color = who, size = n)) +
+#   geom_count() +
+#   labs(x = "Moderate-intensity physical activity, minutes/week",
+#        y = "Vigorous-intensity physical activity, minutes/week") +
+#   theme_classic() +
+#   theme(legend.position = "top") +
+#   scale_color_manual(values = c("grey19", "grey59"), name = "Guideline recommendations") +
+#   scale_size_continuous(breaks = NULL, name = "", range = c(6,24)) +
+#   geom_text(aes(label = n), color = "#ffffff", size = 4, fontface = 2) +
+#   guides(colour = guide_legend(override.aes = list(size = 6)))
 
-
-ggsave("fig3_balls4_sort-hvid.jpg", 
-       width = 18,
-       height = 18,
-       units = "cm",
-       dpi=600)
-
-
-# Som sort/hvid, 2 kat
-ggplot(fig3, aes(moderate, vigorous, color = who, size = n)) +
-  geom_count() +
-  labs(x = "Moderate-intensity physical activity, minutes/week",
-       y = "Vigorous-intensity physical activity, minutes/week") +
-  theme_classic() +
-  theme(legend.position = "top") +
-  scale_color_manual(values = c("grey19", "grey59"), name = "Guideline recommendations") +
-  scale_size_continuous(breaks = NULL, name = "", range = c(6,24)) +
-  geom_text(aes(label = n), color = "#ffffff", size = 4, fontface = 2) +
-  guides(colour = guide_legend(override.aes = list(size = 6)))
-
-
-ggsave("fig3_balls2_sort-hvid.jpg", 
-       width = 18,
-       height = 18,
-       units = "cm",
-       dpi=600)
